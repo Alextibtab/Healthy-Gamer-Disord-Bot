@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "discord healthy gamer bot"
+version = "0.1.0"
+description = ""
+authors = ["Alextibtab <48660540+Alextibtab@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.1"
+python-dotenv = "^0.21.0"
+discord-py-interactions = "^4.3.4"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^0.991"
+black = "^22.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
