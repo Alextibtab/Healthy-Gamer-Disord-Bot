@@ -28,7 +28,7 @@ async def get_stats(ctx: interactions.CommandContext):
         XP: {player.get_xp()}
         Attack: {player.get_attack()}
         Max HP: {player.get_max_hp()}
-        Current HP: {player.get_current_hp()}"""
+        Current HP: {player.current_hp}"""
     )
 
 

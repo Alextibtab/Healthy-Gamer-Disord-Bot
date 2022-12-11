@@ -22,15 +22,25 @@ class Game:
         encounter = self.encounters.get(player_id)
         if encounter is None:
             player = self.get_player(player_id)
-            encounter = Encounter(player)
-            self.encounters.update({player_id: encounter})
-            print(f"Encounter started! ID: {player_id}")
+            if player.is_alive():
+                encounter = Encounter(player)
+                self.encounters.update({player_id: encounter})
+                print(f"Encounter started! ID: {player_id}")
+            else:
+                return "You are dead and can't fight!"
+        else:
+            return f"""Current Status:
+            Player HP: {encounter.player.current_hp}
+            Mob HP: {encounter.mob.get_current_hp()}
+            """
 
     def encounter_action(self, player_id: int):
         encounter = self.encounters.get(player_id)
         if encounter is None:
-            self.start_encounter(player_id)
+            new_encounter = self.start_encounter(player_id)
             encounter = self.encounters.get(player_id)
+            if encounter is None:
+                return new_encounter
 
         result = encounter.battle()
         if result.result != Result.CONTINUE:
