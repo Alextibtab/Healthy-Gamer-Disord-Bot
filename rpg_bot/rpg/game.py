@@ -23,10 +23,8 @@ class Game:
         if encounter is None:
             player = self.get_player(player_id)
             encounter = Encounter(player)
-            self.encounters[player_id] = encounter
-            return "Encounter started!"
-        else:
-            return "Encounter already in progress!"
+            self.encounters.update({player_id: encounter})
+            print(f"Encounter started! ID: {player_id}")
 
     def encounter_action(self, player_id: int):
         encounter = self.encounters.get(player_id)
@@ -35,7 +33,7 @@ class Game:
             encounter = self.encounters.get(player_id)
 
         result = encounter.battle()
-        if result != Result.CONTINUE:
+        if result.result != Result.CONTINUE:
             self.end_encounter(player_id)
 
         return result.message
@@ -44,6 +42,7 @@ class Game:
         encounter = self.encounters.get(player_id)
         if encounter is not None:
             self.encounters.pop(player_id)
+            print(f"Encounter ended! ID: {player_id}")
             return "Encounter ended!"
         else:
             return "No encounter in progress!"

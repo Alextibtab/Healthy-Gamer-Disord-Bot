@@ -18,9 +18,9 @@ class ActionResult:
 
 class Encounter:
     # Constructor
-    def __init__(self, player: Player, mob: Mob = Mob(10, 2, 0, 1)):
+    def __init__(self, player: Player):
         self.player = player
-        self.mob = mob
+        self.mob = Mob(10, 2, 0, 1)
 
     # Methods
     def do_player_attack(self):
