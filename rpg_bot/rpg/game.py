@@ -25,7 +25,6 @@ class Game:
             if player.is_alive():
                 encounter = Encounter(player)
                 self.encounters.update({player_id: encounter})
-                print(f"Encounter started! ID: {player_id}")
             else:
                 return "You are dead and can't fight!"
         else:
@@ -52,7 +51,11 @@ class Game:
         encounter = self.encounters.get(player_id)
         if encounter is not None:
             self.encounters.pop(player_id)
-            print(f"Encounter ended! ID: {player_id}")
             return "Encounter ended!"
         else:
             return "No encounter in progress!"
+
+    # reset player
+    def reset_player(self, player_id: int):
+        self.players[player_id] = Player(player_id, 0, 2, 10, 1)
+        return "Player reset!"

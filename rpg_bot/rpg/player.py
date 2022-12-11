@@ -73,3 +73,14 @@ class Player:
 
     def is_alive(self):
         return self.current_hp > 0
+
+    def add_xp(self, xp: int):
+        self.xp += xp
+        if self.xp >= 10:
+            self.level += 1
+            self.xp = 0
+            self.max_hp += 10
+            self.attack += 2
+            self._current_hp = self.max_hp
+            return True
+        return False

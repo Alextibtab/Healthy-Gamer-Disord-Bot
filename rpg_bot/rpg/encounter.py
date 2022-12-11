@@ -1,3 +1,4 @@
+from random import randrange
 from enum import Enum
 
 from .monster import Mob
@@ -20,7 +21,7 @@ class Encounter:
     # Constructor
     def __init__(self, player: Player):
         self.player = player
-        self.mob = Mob(10, 2, 0, 1)
+        self.mob = Mob(10, 2, randrange(10), 1)
 
     # Methods
     def do_player_attack(self):
@@ -46,6 +47,7 @@ class Encounter:
                     f"You dealt {player_damage} damage to the mob, but the mob dealt {mob_damage} damage to you.",
                 )
         else:
+            self.player.add_xp(self.mob.get_xp())
             return ActionResult(
                 Result.WIN,
                 f"You killed the mob! You dealt {player_damage} damage to the mob.",

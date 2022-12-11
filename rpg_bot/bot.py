@@ -18,8 +18,8 @@ async def on_ready():
     print(f"Client has connected to Discord!")
 
 
-@client.command(name="getstats", description="Get your player stats", scope=GUILD)
-async def get_stats(ctx: interactions.CommandContext):
+@client.command(name="stats", description="Get your player stats", scope=GUILD)
+async def stats(ctx: interactions.CommandContext):
     player = game.get_player(ctx.member.id)
     await ctx.send(
         f"""{ctx.member.name} your stats are:
@@ -32,15 +32,22 @@ async def get_stats(ctx: interactions.CommandContext):
     )
 
 
-@client.command(name="attack", description="Battle a monster", scope=GUILD)
-async def attack(ctx: interactions.CommandContext):
+@client.command(name="fight", description="Battle a monster", scope=GUILD)
+async def fight(ctx: interactions.CommandContext):
     result = game.encounter_action(ctx.member.id)
     await ctx.send(result)
 
 
-@client.command(name="run", description="Run from a battle", scope=GUILD)
-async def run(ctx: interactions.CommandContext):
+@client.command(name="flee", description="Run from a battle", scope=GUILD)
+async def flee(ctx: interactions.CommandContext):
     result = game.end_encounter(ctx.member.id)
+    await ctx.send(result)
+
+
+# reset player data
+@client.command(name="reset", description="Reset your player data", scope=GUILD)
+async def reset(ctx: interactions.CommandContext):
+    result = game.reset_player(ctx.member.id)
     await ctx.send(result)
 
 
