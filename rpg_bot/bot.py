@@ -1,6 +1,7 @@
 import os
 
 import interactions
+from pymongo import MongoClient
 from dotenv import load_dotenv
 
 from .rpg.game import Game
@@ -10,8 +11,9 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 GUILD = int(os.getenv("GUILD_ID"))
 
 client = interactions.Client(token=TOKEN)
-game = Game()
 
+db_client = MongoClient(os.getenv("MONGO_URI"))
+game = Game(db_client)
 
 @client.event
 async def on_ready():

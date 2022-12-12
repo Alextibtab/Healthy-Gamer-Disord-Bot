@@ -4,17 +4,18 @@ from .encounter import Encounter, Result
 
 class Game:
     # Constructor
-    def __init__(self):
+    def __init__(self, db):
         self.players = {}
         self.encounters = {}
+        self.db_client = db
 
     # Getters and setters
     def get_player(self, id: int):
-        player = self.players.get(id)
-        if player is not None:
-            return player
+        if self.load_player(id):
+            return self.players.get(id)
         else:
             self.players[id] = Player(id, 0, 2, 10, 1)
+            self.save_player(id)
             return self.players[id]
 
     # Methods
@@ -55,7 +56,34 @@ class Game:
         else:
             return "No encounter in progress!"
 
-    # reset player
     def reset_player(self, player_id: int):
         self.players[player_id] = Player(player_id, 0, 2, 10, 1)
         return "Player reset!"
+
+    def save_player(self, player_id: int):
+        player = {
+            "player_id": player_id,
+            "xp": self.players[player_id].xp,
+            "level": self.players[player_id].level,
+            "current_hp": self.players[player_id].current_hp,
+            "max_hp": self.players[player_id].max_hp,
+            "attack": self.players[player_id].attack,
+        }
+        self.db_client.discord_rpg.players.update_one(
+            {"player_id": player_id}, {"$set": player}, upsert=True
+        )
+
+    def load_player(self, player_id: int):
+        player = self.db_client.discord_rpg.players.find_one({"player_id": player_id})
+        if player is not None:
+            self.players[player_id] = Player(
+                player["player_id"],
+                player["xp"],
+                player["attack"],
+                player["max_hp"],
+                player["level"],
+            )
+            self.players[player_id].current_hp = player["current_hp"]
+            return True
+        else:
+            return False
