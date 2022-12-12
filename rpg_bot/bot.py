@@ -22,7 +22,7 @@ async def on_ready():
 
 @client.command(name="stats", description="Get your player stats", scope=GUILD)
 async def stats(ctx: interactions.CommandContext):
-    player = game.get_player(ctx.member.id)
+    player = game.get_player(str(ctx.member.id))
     await ctx.send(
         f"""{ctx.member.name} your stats are:
   
@@ -36,20 +36,20 @@ async def stats(ctx: interactions.CommandContext):
 
 @client.command(name="fight", description="Battle a monster", scope=GUILD)
 async def fight(ctx: interactions.CommandContext):
-    result = game.encounter_action(ctx.member.id)
+    result = game.encounter_action(str(ctx.member.id))
     await ctx.send(result)
 
 
 @client.command(name="flee", description="Run from a battle", scope=GUILD)
 async def flee(ctx: interactions.CommandContext):
-    result = game.end_encounter(ctx.member.id)
+    result = game.end_encounter(str(ctx.member.id))
     await ctx.send(result)
 
 
 # reset player data
 @client.command(name="reset", description="Reset your player data", scope=GUILD)
 async def reset(ctx: interactions.CommandContext):
-    result = game.reset_player(ctx.member.id)
+    result = game.reset_player(str(ctx.member.id))
     await ctx.send(result)
 
 

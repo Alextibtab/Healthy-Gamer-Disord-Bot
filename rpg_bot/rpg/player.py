@@ -5,7 +5,7 @@ from datetime import datetime
 class Player:
     # Constructor
     def __init__(
-        self, id: int, xp: int = 0, attack: int = 0, hp: int = 0, level: int = 0
+        self, id: str, xp: int = 0, attack: int = 0, hp: int = 0, level: int = 0
     ):
         self.id = id
         self.xp = xp
@@ -19,7 +19,7 @@ class Player:
     def get_id(self):
         return self.id
 
-    def set_id(self, id: int):
+    def set_id(self, id: str):
         self.id = id
 
     def get_xp(self):

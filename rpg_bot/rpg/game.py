@@ -10,7 +10,7 @@ class Game:
         self.db_client = db
 
     # Getters and setters
-    def get_player(self, id: int):
+    def get_player(self, id: str):
         if self.load_player(id):
             return self.players.get(id)
         else:
@@ -19,7 +19,7 @@ class Game:
             return self.players[id]
 
     # Methods
-    def start_encounter(self, player_id: int):
+    def start_encounter(self, player_id: str):
         encounter = self.encounters.get(player_id)
         if encounter is None:
             player = self.get_player(player_id)
@@ -34,7 +34,7 @@ class Game:
             Mob HP: {encounter.mob.get_current_hp()}
             """
 
-    def encounter_action(self, player_id: int):
+    def encounter_action(self, player_id: str):
         encounter = self.encounters.get(player_id)
         if encounter is None:
             new_encounter = self.start_encounter(player_id)
@@ -46,9 +46,10 @@ class Game:
         if result.result != Result.CONTINUE:
             self.end_encounter(player_id)
 
+        self.save_player(player_id)
         return result.message
 
-    def end_encounter(self, player_id: int):
+    def end_encounter(self, player_id: str):
         encounter = self.encounters.get(player_id)
         if encounter is not None:
             self.encounters.pop(player_id)
@@ -56,11 +57,11 @@ class Game:
         else:
             return "No encounter in progress!"
 
-    def reset_player(self, player_id: int):
+    def reset_player(self, player_id: str):
         self.players[player_id] = Player(player_id, 0, 2, 10, 1)
         return "Player reset!"
 
-    def save_player(self, player_id: int):
+    def save_player(self, player_id: str):
         player = {
             "player_id": player_id,
             "xp": self.players[player_id].xp,
@@ -73,7 +74,7 @@ class Game:
             {"player_id": player_id}, {"$set": player}, upsert=True
         )
 
-    def load_player(self, player_id: int):
+    def load_player(self, player_id: str):
         player = self.db_client.discord_rpg.players.find_one({"player_id": player_id})
         if player is not None:
             self.players[player_id] = Player(
@@ -83,7 +84,7 @@ class Game:
                 player["max_hp"],
                 player["level"],
             )
-            self.players[player_id].current_hp = player["current_hp"]
+            self.players[player_id]._current_hp = player["current_hp"]
             return True
         else:
             return False
