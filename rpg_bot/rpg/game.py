@@ -11,6 +11,8 @@ class Game:
 
     # Getters and setters
     def get_player(self, id: str):
+        if id in self.players.keys():
+            return self.players.get(id)
         if self.load_player(id):
             return self.players.get(id)
         else:
