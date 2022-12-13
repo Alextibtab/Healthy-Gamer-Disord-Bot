@@ -1,8 +1,8 @@
 from random import randrange
 from enum import Enum
 
-from .monster import Mob
-from .player import Player
+from .entities.monster import Monster
+from .entities.player import Player
 
 
 class Result(Enum):
@@ -21,7 +21,7 @@ class Encounter:
     # Constructor
     def __init__(self, player: Player):
         self.player = player
-        self.mob = Mob(10, 2, randrange(10), 1)
+        self.mob = Monster('Giant Rat', 10, 10, 2, 2, 1, 10)
 
     # Methods
     def do_player_attack(self):
