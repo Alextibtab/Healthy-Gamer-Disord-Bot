@@ -23,15 +23,32 @@ async def on_ready():
 @client.command(name="stats", description="Get your player stats", scope=GUILD)
 async def stats(ctx: interactions.CommandContext):
     player = game.get_player(str(ctx.member.id))
-    await ctx.send(
-        f"""{ctx.member.name} your stats are:
-  
-        Level: {player.get_level()}
-        XP: {player.get_xp()}
-        Attack: {player.get_attack()}
-        Max HP: {player.get_max_hp()}
-        Current HP: {player.current_hp}"""
+    player.current_hp
+    stats_embed = interactions.Embed(
+        title="Character Stats:",
+        description=f"<@{ctx.member.id}> your stats are:",
+        color=0xCD2323,
+        fields=[
+            interactions.EmbedField(
+                name="Level", value=player.get_level(), inline=True
+            ),
+            interactions.EmbedField(
+                name="XP 🟢", value=player.get_xp(), inline=True
+            ),
+
+            interactions.EmbedField(
+                name="Max HP", value=player.get_max_hp(), inline=True
+            ),
+            interactions.EmbedField(
+                name="Current HP ❤️", value=player.current_hp, inline=True
+            ),
+            interactions.EmbedField(
+                name="Attack 🗡️", value=player.get_attack(), inline=False
+            ),
+        ],
+        footer=interactions.EmbedFooter(text="RPG Bot"),
     )
+    await ctx.send(embeds=stats_embed)
 
 
 @client.command(name="fight", description="Battle a monster", scope=GUILD)
