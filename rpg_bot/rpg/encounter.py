@@ -1,7 +1,7 @@
 from random import randrange
 from enum import Enum
 
-from .entities.monster import Monster
+from .entities.monster import MonsterFactory
 from .entities.player import Player
 
 
@@ -21,7 +21,7 @@ class Encounter:
     # Constructor
     def __init__(self, player: Player):
         self.player = player
-        self.mob = Monster('Giant Rat', 10, 10, 2, 2, 1, 10)
+        self.mob = MonsterFactory().get_random_monster(player.get_level())
 
     # Methods
     def do_player_attack(self):
@@ -39,16 +39,16 @@ class Encounter:
             if not player_alive:
                 return ActionResult(
                     Result.LOSE,
-                    f"You died! You dealt {player_damage} damage to the mob, but the mob dealt {mob_damage} damage to you.",
+                    f"You died! You dealt {player_damage} damage to the {self.mob.get_name()}, but the {self.mob.get_name()} dealt {mob_damage} damage to you.",
                 )
             else:
                 return ActionResult(
                     Result.CONTINUE,
-                    f"You dealt {player_damage} damage to the mob, but the mob dealt {mob_damage} damage to you.",
+                    f"You dealt {player_damage} damage to the {self.mob.get_name()}, but the {self.mob.get_name()} dealt {mob_damage} damage to you.",
                 )
         else:
             self.player.add_xp(self.mob.get_xp())
             return ActionResult(
                 Result.WIN,
-                f"You killed the mob! You dealt {player_damage} damage to the mob.",
+                f"You killed the {self.mob.get_name()}! You dealt {player_damage} damage to the {self.mob.get_name()}.",
             )

@@ -64,6 +64,9 @@ class Game:
         else:
             return "No encounter in progress!"
 
+    def create_player(self, user):
+        pass
+
     def reset_player(self, user):
         id = str(user.id)
         name = user.name

@@ -20,6 +20,11 @@ async def on_ready():
     print(f"Client has connected to Discord!")
 
 
+@client.command(name="create", description="Create a new character")
+async def create(ctx: interactions.CommandContext):
+    result = game.create_player(ctx.member)
+    await ctx.send(result)
+
 @client.command(name="stats", description="Get your player stats")
 async def stats(ctx: interactions.CommandContext):
     player = game.get_player(ctx.member)
