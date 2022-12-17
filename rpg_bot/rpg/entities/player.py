@@ -1,10 +1,25 @@
 from datetime import datetime
 
 from .entity import Entity
+
+
 class Player(Entity):
-    def __init__(self, id: str, name: str, hp: int, mana: int, attack: int, defence: int, gold: int, level: int, xp: int):
+    def __init__(
+        self,
+        id: str,
+        name: str,
+        race: str,
+        hp: int,
+        mana: int,
+        attack: int,
+        defence: int,
+        gold: int,
+        level: int,
+        xp: int,
+    ):
         super().__init__(name, hp, mana, attack, defence, level, xp)
         self.id = id
+        self.race = race
         self.max_hp = hp
         self._health = hp
         self.gold = gold
@@ -21,7 +36,7 @@ class Player(Entity):
     def get_max_hp(self):
         return self.max_hp
 
-    def set_max_hp(self, max_hp):   
+    def set_max_hp(self, max_hp):
         self.max_hp = max_hp
 
     def get_gold(self):
@@ -31,9 +46,8 @@ class Player(Entity):
         self.gold = gold
 
     def get_items(self):
-        # if self.items empty return 'no items' string else return items
         if not self.items:
-            return 'no items'
+            return "no items"
         return self.items
 
     def set_items(self, items):
@@ -61,11 +75,3 @@ class Player(Entity):
     # Methods
     def add_xp(self, xp: int):
         self.xp += xp
-        if self.xp >= 10:
-            self.level += 1
-            self.xp = 0
-            self.max_hp += 10
-            self.attack += 2
-            self.health = self.max_hp
-            return True
-        return False

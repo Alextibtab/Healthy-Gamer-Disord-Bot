@@ -44,7 +44,7 @@ class Entity:
     def get_level(self):
         return self.level
 
-    def set_level(self, level):   
+    def set_level(self, level):
         self.level = level
 
     def get_xp(self):
@@ -57,7 +57,7 @@ class Entity:
     def take_damage(self, damage):
         self.health -= damage
         return self.is_alive()
-    
+
     def is_alive(self):
         return self.health > 0
 

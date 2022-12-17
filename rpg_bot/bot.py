@@ -15,6 +15,7 @@ client = interactions.Client(token=TOKEN)
 db_client = MongoClient(os.getenv("MONGO_URI"))
 game = Game(db_client)
 
+
 @client.event
 async def on_ready():
     print(f"Client has connected to Discord!")
@@ -25,6 +26,7 @@ async def create(ctx: interactions.CommandContext):
     result = game.create_player(ctx.member)
     await ctx.send(result)
 
+
 @client.command(name="stats", description="Get your player stats")
 async def stats(ctx: interactions.CommandContext):
     player = game.get_player(ctx.member)
@@ -33,30 +35,20 @@ async def stats(ctx: interactions.CommandContext):
         description=f"<@{ctx.member.id}> your stats are:",
         color=0xCD2323,
         fields=[
-            interactions.EmbedField(
-                name="Name", value=player.name, inline=True
-            ),
+            interactions.EmbedField(name="Name", value=player.name, inline=True),
             interactions.EmbedField(
                 name="Level 🟢", value=player.get_level(), inline=True
             ),
-            interactions.EmbedField(
-                name="XP 🟡", value=player.get_xp(), inline=True
-            ),
-            interactions.EmbedField(
-                name="\u200b", value="\u200b", inline=False
-            ),
+            interactions.EmbedField(name="XP 🟡", value=player.get_xp(), inline=True),
+            interactions.EmbedField(name="\u200b", value="\u200b", inline=False),
             interactions.EmbedField(
                 name="Max HP", value=player.get_max_hp(), inline=False
             ),
             interactions.EmbedField(
                 name="Current HP ❤️", value=player.health, inline=True
             ),
-            interactions.EmbedField(
-                name="Mana 🧙‍♂️", value=player.mana, inline=True
-            ),
-            interactions.EmbedField(
-                name="\u200b", value="\u200b", inline=False
-            ),
+            interactions.EmbedField(name="Mana 🧙‍♂️", value=player.mana, inline=True),
+            interactions.EmbedField(name="\u200b", value="\u200b", inline=False),
             interactions.EmbedField(
                 name="Attack 🗡️", value=player.get_attack(), inline=True
             ),
