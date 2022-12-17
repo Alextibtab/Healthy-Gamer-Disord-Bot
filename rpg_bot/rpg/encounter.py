@@ -52,3 +52,40 @@ class Encounter:
                 Result.WIN,
                 f"You killed the {self.mob.get_name()}! You dealt {player_damage} damage to the {self.mob.get_name()}.",
             )
+
+
+class PVP_Encounter:
+    # Constructor
+    def __init__(self, player: Player, opponent: Player):
+        self.player = player
+        self.opponent = opponent
+
+    # Methods
+    def do_player_attack(self):
+        damage = self.player.do_attack()
+        return self.opponent.take_damage(damage), damage
+
+    def do_opponent_attack(self):
+        damage = self.opponent.do_attack()
+        return self.player.take_damage(damage), damage
+
+    def battle(self):
+        opponent_alive, player_damage = self.do_player_attack()
+        if opponent_alive:
+            player_alive, opponent_damage = self.do_opponent_attack()
+            if not player_alive:
+                return ActionResult(
+                    Result.LOSE,
+                    f"You died! You dealt {player_damage} damage to {self.opponent.get_name()}, but {self.opponent.get_name()} dealt {opponent_damage} damage to you.",
+                )
+            else:
+                return ActionResult(
+                    Result.CONTINUE,
+                    f"You dealt {player_damage} damage to {self.opponent.get_name()}, but {self.opponent.get_name()} dealt {opponent_damage} damage to you.",
+                )
+        else:
+            self.player.add_xp(self.opponent.get_level() * 5)
+            return ActionResult(
+                Result.WIN,
+                f"You killed {self.opponent.get_name()}! You dealt {player_damage} damage to {self.opponent.get_name()}.",
+            )

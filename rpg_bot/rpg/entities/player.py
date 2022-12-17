@@ -33,6 +33,12 @@ class Player(Entity):
     def set_id(self, id):
         self.id = id
 
+    def get_race(self):
+        return self.race
+
+    def set_race(self, race):
+        self.race = race
+
     def get_max_hp(self):
         return self.max_hp
 

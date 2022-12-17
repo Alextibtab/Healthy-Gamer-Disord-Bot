@@ -1,5 +1,5 @@
 from .entities.player import Player
-from .encounter import Encounter, Result
+from .encounter import Encounter, PVP_Encounter, Result
 
 
 class Game:
@@ -18,7 +18,7 @@ class Game:
         if self.load_player(id):
             return self.players.get(id)
         else:
-            self.players[id] = Player(id, name, 10, 10, 2, 4, 0, 1, 0)
+            self.players[id] = Player(id, name, "Human", 10, 10, 2, 4, 0, 1, 0)
             self.save_player(id)
             return self.players[id]
 
@@ -64,6 +64,24 @@ class Game:
         else:
             return "No encounter in progress!"
 
+    def start_pvp_encounter(self, user, opponent):
+        player_id = str(user.id)
+        opponent_id = str(opponent.id)
+        encounter = self.encounters.get(player_id)
+        if encounter is None:
+            player = self.get_player(user)
+            opponent = self.get_player(opponent)
+            if player.is_alive() and opponent.is_alive():
+                encounter = PVP_Encounter(player, opponent)
+                self.encounters.update({player_id: encounter})
+            else:
+                return "You or your opponent is dead and can't fight!"
+        else:
+            return f"""Current Status:
+            Player HP: {encounter.player.health}
+            Opponent HP: {encounter.opponent.health}
+            """
+
     def create_player(self, user):
         pass
 
@@ -77,6 +95,7 @@ class Game:
         player = {
             "player_id": player_id,
             "name": self.players[player_id].get_name(),
+            "race": self.players[player_id].get_race(),
             "max_hp": self.players[player_id].get_max_hp(),
             "health": self.players[player_id].health,
             "mana": self.players[player_id].get_mana(),
@@ -96,6 +115,7 @@ class Game:
             self.players[player_id] = Player(
                 player["player_id"],
                 player["name"],
+                player["race"],
                 player["health"],
                 player["mana"],
                 player["attack"],
